@@ -1,32 +1,33 @@
 package main
 
 import (
-	_ "embed"
+	"encoding/json"
 	"log"
 	"net/http"
-	"text/template"
 )
 
-// embed the public templating code
-//
-//go:embed templates/index.html
-var code string
-
-var compiledTemplate = template.Must(template.New("index").Parse(code))
+type Response struct {
+	Status string `json:"status"`
+	Name   string `json:"name,omitempty"`
+}
 
 func main() {
 	mux := http.NewServeMux()
 
-	// This endpoint will show any content in the "public" directory
-	// and will also serve the index.html file as the homepage
+	// Return JSON response with status
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		compiledTemplate.Execute(w, nil)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(Response{
+			Status: "success",
+		})
 	})
 
-	mux.HandleFunc("/form/hello", func(w http.ResponseWriter, r *http.Request) {
-		name := r.FormValue("name")
-		compiledTemplate.Execute(w, map[string]interface{}{
-			"Name": name,
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		name := r.URL.Query().Get("name")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(Response{
+			Status: "success",
+			Name:   name,
 		})
 	})
 

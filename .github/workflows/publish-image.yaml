@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   goreleaser:
-    name: build and push zippy
+    name: build and push zippy container image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,3 +36,14 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push zippy helm chart
+        uses: appany/helm-oci-chart-releaser@v0.3.0
+        with:
+          name: zippy
+          repository: appany
+          tag: ${{ github.ref_name }}d
+          path: charts/zippy # Default charts/{name}
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+          # update_dependencies: 'true' # Defaults to false

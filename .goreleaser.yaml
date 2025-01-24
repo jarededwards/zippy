@@ -59,7 +59,7 @@ docker_manifests:
     image_templates:
       - "ghcr.io/jarededwards/zippy:{{ .Tag }}-amd64"
       - "ghcr.io/jarededwards/zippy:{{ .Tag }}-arm64"
-  - name_template: "ghcr.io/jarededwards/zippy:latest"
+  - name_template: "ghcr.io/jarededwards/zippy:{{ .Version }}"
     image_templates:
       - "ghcr.io/jarededwards/zippy:{{ .Tag }}-amd64"
       - "ghcr.io/jarededwards/zippy:{{ .Tag }}-arm64"

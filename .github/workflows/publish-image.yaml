@@ -39,7 +39,7 @@ jobs:
       - name: Push zippy helm chart
         uses: appany/helm-oci-chart-releaser@v0.3.0
         with:
-          name: zippy
+          name: zippy-chart
           repository: jarededwards
           tag: ${{ github.ref_name }}
           path: charts/zippy # Default charts/{name}

@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   goreleaser:
-    name: build and push zippy container image
+    name: build and push zippy container and chart
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,7 +40,7 @@ jobs:
         uses: appany/helm-oci-chart-releaser@v0.3.0
         with:
           name: zippy
-          repository: zippy
+          repository: jarededwards
           tag: ${{ github.ref_name }}
           path: charts/zippy # Default charts/{name}
           registry: ghcr.io
